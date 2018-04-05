@@ -6,6 +6,18 @@ module.exports = {
 
   lib: lib,
 
+  capitalcase: function(phrase) {
+    if (!phrase || typeof phrase !== 'string') {
+      return '';
+    }
+    if (phrase.length > 1) {
+      return phrase[0].toUpperCase() + phrase.slice(1);
+    }
+    else {
+      return phrase.toUpperCase();
+    }
+  },
+
   list: function(items,randomize) {
     if (!items || typeof items !== 'object' || !items.length) {
       return '';
@@ -39,7 +51,24 @@ module.exports = {
       }
       return thisLine;
     };
-    return merge(lines[1],lines[0]);
+    let sentence = [];
+    let currentLine = [];
+    for (let i = 0; i < lines.length; i++) {
+      if (i > 0 && currentLine.length) {
+        let line = merge(lines[i],lines[i-1]);
+        currentLine.push(line);
+      }
+      else {
+        let line = merge(lines[i]);
+        currentLine.push(line);
+      }
+      let add = rand(true,false);
+      if (add || i === lines.length-1) {
+        sentence.push(this.capitalcase(this.list(currentLine)) + '.');
+        currentLine = [];
+      }
+    }
+    return sentence;
   },
 
   productDescription: function(obj,plural,singularKeywords,pluralKeywords) {
@@ -97,7 +126,7 @@ module.exports = {
         lines.push(this.lib.product.property('brand',obj.brand,noun,plural));
       }
     }
-    return lines;
+    return this.join(lines,true);
   }
 
 };

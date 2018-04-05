@@ -13,4 +13,14 @@ describe('article module', () => {
     expect(mod.list(items)).to.equal('red and blue');
   });
 
+  it('product description should return a description list', () => {
+    let obj = {
+      price: '$5',
+      colors: ['blue','red'],
+      sizes: ['large','small'],
+      title: 'The Slow Feeder'
+    };
+    expect(mod.productDescription(obj,false)).to.be.an('array');
+  });
+
 });

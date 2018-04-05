@@ -7,5 +7,4 @@ let obj = {
   title: 'The Slow Feeder'
 };
 
-let lines = ['***grass*** $$$is$$$ red','***grass*** $$$is$$$ nice'];
-console.log(lines[0] + ' ' + text.join(lines));
+console.log(text.productDescription(obj,false));
