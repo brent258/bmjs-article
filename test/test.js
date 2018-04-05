@@ -8,4 +8,9 @@ describe('article module', () => {
     expect(mod).to.not.be.undefined;
   });
 
+  it('list should return printed string of list items', () => {
+    let items = ['red','blue'];
+    expect(mod.list(items)).to.equal('red and blue');
+  });
+
 });

@@ -26,6 +26,7 @@
     "mocha": "^4.0.1"
   },
   "dependencies": {
-    "bmjs-random": "^1.0.0"
+    "bmjs-random": "^1.0.0",
+    "bmjs-shuffle": "^1.0.0"
   }
 }
