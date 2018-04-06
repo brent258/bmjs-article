@@ -49,6 +49,9 @@ module.exports = {
       else if (matchSubject || previousLine.match(/\*\*\*.+\*\*\*/g) && thisLine.match(/\*\*\*.+\*\*\*/g) && previousLine.match(/\*\*\*.+\*\*\*/g)[0] === thisLine.match(/\*\*\*.+\*\*\*/g)[0]) {
         thisLine = thisLine.replace(/.*\*\*\*.+\*\*\*\s/g,'').replace(/\$\$\$/g,'');
       }
+      else {
+        thisLine = thisLine.replace(/\*\*\*|\$\$\$/g,'');
+      }
       return thisLine;
     };
     let sentence = [];
@@ -86,8 +89,8 @@ module.exports = {
     if (obj.brand) properties.push('brand');
     properties = shuffle(properties);
     for (let i = 0; i < properties.length; i++) {
-      let noun = obj.title;
-      if (i > 0) {
+      let noun = 'the ' + obj.title;
+      if (lines.length) {
         if (plural) {
           let nouns = ['products','items'];
           if (pluralKeywords) nouns = nouns.concat(pluralKeywords);
