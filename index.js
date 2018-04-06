@@ -18,6 +18,37 @@ module.exports = {
     }
   },
 
+  parseProperty: function(text) {
+    if (text && typeof text === 'string') {
+      text = text
+      .replace(/[^0-9A-Za-z\-\&\.\,\s\$]/g,'')
+      .replace(/(\w+)\&(\w+)/g,'$1 and $2')
+      .replace(/\&/g,'and')
+      .replace(/\s+/g,' ')
+      .toLowerCase();
+    }
+    return text;
+  },
+
+  parseHeader: function(text) {
+    if (text && typeof text === 'string') {
+      let rawHeader = text
+      .replace(/([^a-zA-Z0-9\s])([a-zA-Z0-9])/g,'$1 $2')
+      .replace(/([a-zA-Z0-9])([^a-zA-Z0-9\s])/g,'$1 $2')
+      .split(' ');
+      let result = [];
+      for (let i = 0; i < rawHeader.length; i++) {
+        if (rawHeader[i].match(/^\w/g)) {
+          result.push(rawHeader[i]);
+        }
+        else {
+          break;
+        }
+      }
+      return result.join(' ');
+    }
+  },
+
   list: function(items,randomize) {
     if (!items || typeof items !== 'object' || !items.length) {
       return '';
@@ -89,7 +120,7 @@ module.exports = {
     if (obj.brand) properties.push('brand');
     properties = shuffle(properties);
     for (let i = 0; i < properties.length; i++) {
-      let noun = 'the ' + obj.title;
+      let noun = 'the ' + this.parseHeader(obj.title);
       if (lines.length) {
         if (plural) {
           let nouns = ['products','items'];
@@ -105,28 +136,28 @@ module.exports = {
         }
       }
       if (properties[i] === 'price') {
-        lines.push(this.lib.product.property('price',obj.price,noun,plural));
+        lines.push(this.lib.product.property('price',this.parseProperty(obj.price),noun,plural));
       }
       else if (properties[i] === 'colors') {
         let line = [];
-        line.push(this.lib.product.property('colors',this.list(obj.colors),noun,plural));
-        line.push(this.lib.product.property('colorsCount',obj.colors.length,noun,plural));
+        line.push(this.lib.product.property('colors',this.parseProperty(this.list(obj.colors)),noun,plural));
+        line.push(this.lib.product.property('colorsCount',this.parseProperty(obj.colors.length),noun,plural));
         lines.push(rand(...line));
       }
       else if (properties[i] === 'sizes') {
         let line = [];
-        line.push(this.lib.product.property('sizes',this.list(obj.sizes),noun,plural));
-        line.push(this.lib.product.property('sizesCount',obj.sizes.length,noun,plural));
+        line.push(this.lib.product.property('sizes',this.parseProperty(this.list(obj.sizes)),noun,plural));
+        line.push(this.lib.product.property('sizesCount',this.parseProperty(obj.sizes.length),noun,plural));
         lines.push(rand(...line));
       }
       else if (properties[i] === 'features') {
 
       }
       else if (properties[i] === 'rating') {
-        lines.push(this.lib.product.property('rating',obj.rating,noun,plural));
+        lines.push(this.lib.product.property('rating',this.parseProperty(obj.rating),noun,plural));
       }
       else if (properties[i] === 'brand') {
-        lines.push(this.lib.product.property('brand',obj.brand,noun,plural));
+        lines.push(this.lib.product.property('brand',this.parseProperty(obj.brand),noun,plural));
       }
     }
     return this.join(lines,true);
