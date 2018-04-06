@@ -1,6 +1,6 @@
 {
   "name": "bmjs-article",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A utility for creating text content for websites.",
   "main": "index.js",
   "scripts": {
